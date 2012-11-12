@@ -6,8 +6,9 @@ convict = require('convict');
 
 const
 asana = require('./lib/asana.js'),
+bugzilla = require('./lib/bugzilla.js'),
 github = require('./lib/github.js'),
-bugzilla = require('./lib/bugzilla.js');
+teamstatus = require('./lib/teamstatus.js');
 
 conf = convict({
   asana: {
@@ -20,15 +21,29 @@ conf = convict({
       format: 'string'
     }
   },
+  bugzilla: {
+    email: {
+      doc: "Bugzilla email",
+      format: 'string'
+    }
+  },
   github: {
     username: {
       doc: "Github username",
       format: 'string'
     }
   },
-  bugzilla: {
-    email: {
-      doc: "Bugzilla email",
+  teamstatus: {
+    server: {
+      doc: "IRC server",
+      format: 'string = "irc.mozilla.org"'
+    },
+    channel: {
+      doc: "IRC channel",
+      format: 'string = "identity"'
+    },
+    nick: {
+      doc: "IRC nickname",
       format: 'string'
     }
   }
@@ -39,3 +54,4 @@ conf = convict({
 asana.print();
 github.print();
 bugzilla.print();
+teamstatus.print();
