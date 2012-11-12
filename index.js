@@ -1,24 +1,46 @@
 #!/usr/bin/node
 
-var https = require('https');
+const
+https = require('https'),
+convict = require('convict');
 
-var ASANA_API_KEY = '';
-var ASANA_WORKSPACE_IDS = ['', ''];
-
-var GITHUB_USERNAME = 'fmarier';
-
-var BUGZILLA_EMAIL = 'francois@mozilla.com';
+var conf = convict({
+  asana: {
+    apiKey: {
+      doc: "Asana API key",
+      format: 'string'
+    },
+    workspaceIds: {
+      doc: "List of Asana workspace IDs to use, separated by commas.",
+      format: 'string'
+    }
+  },
+  github: {
+    username: {
+      doc: "Github username",
+      format: 'string'
+    }
+  },
+  bugzilla: {
+    email: {
+      doc: "Bugzilla email",
+      format: 'string'
+    }
+  }
+}).loadFile(__dirname + '/config.json').validate();
 
 // TODO: check https certs
 
 // Asana: http://developer.asana.com/documentation/
 function fetchAsana() {
   // TODO: query all Asana workspaces
+  var workspace = 'TODO';
+
   var options = {
     hostname: 'app.asana.com',
     port: 443,
-    path: '/api/1.0/tasks?workspace=' + ASANA_WORKSPACE_IDS[0] + '&assignee=me',
-    auth: ASANA_API_KEY + ':',
+    path: '/api/1.0/tasks?workspace=' + workspace + '&assignee=me',
+    auth: conf.get('asana').apiKey + ':',
     headers: {'Content-Type': 'application/json'},
     method: 'GET'
   };
@@ -51,7 +73,7 @@ function fetchGithub() {
   var options = {
     hostname: 'api.github.com',
     port: 443,
-    path: '/repos/mozilla/browserid/issues?assignee=' + GITHUB_USERNAME,
+    path: '/repos/mozilla/browserid/issues?assignee=' + conf.get('github').username,
     method: 'GET'
   };
   var req = https.request(options, function (res) {
@@ -84,7 +106,7 @@ function fetchBugzilla() {
   var options = {
     hostname: 'api-dev.bugzilla.mozilla.org',
     port: 443,
-    path: '/1.1/bug?email1=' + BUGZILLA_EMAIL + '&email1_type=equals_any&email1_assigned_to=1&email1_qa_contact=1&email1_cc=1&status=UNCONFIRMED&status=NEW&status=ASSIGNED&status=REOPENED&include_fields=id,summary',
+    path: '/1.1/bug?email1=' + conf.get('bugzilla').email + '&email1_type=equals_any&email1_assigned_to=1&email1_qa_contact=1&email1_cc=1&status=UNCONFIRMED&status=NEW&status=ASSIGNED&status=REOPENED&include_fields=id,summary',
     method: 'GET'
   };
   var req = https.request(options, function (res) {

@@ -1,0 +1,19 @@
+{
+  "name": "phdashboard",
+  "version": "0.0.1",
+  "description": "Persona Hacker Dashboard: displays tasks and bugs assigned to a hacker",
+  "main": "index.js",
+  "dependencies": {
+    "convict": "~0.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fmarier/phdashboard.git"
+  },
+  "author": "Francois Marier <francois@mozilla.com>",
+  "license": "MPL2"
+}
