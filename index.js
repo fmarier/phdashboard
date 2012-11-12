@@ -7,11 +7,11 @@ convict = require('convict');
 var conf = convict({
   asana: {
     apiKey: {
-      doc: "Asana API key",
+      doc: "API key",
       format: 'string'
     },
-    workspaceIds: {
-      doc: "List of Asana workspace IDs to use, separated by commas.",
+    workspaces: {
+      doc: "List of workspace IDs to use, separated by commas.",
       format: 'string'
     }
   },
@@ -31,11 +31,10 @@ var conf = convict({
 
 // TODO: check https certs
 
-// Asana: http://developer.asana.com/documentation/
-function fetchAsana() {
-  // TODO: query all Asana workspaces
-  var workspace = 'TODO';
+var asanaTasks = [];
+var asanaWorkspaceCount = 0;
 
+function fetchAsanaWorkspace(workspace, cb) {
   var options = {
     hostname: 'app.asana.com',
     port: 443,
@@ -51,20 +50,36 @@ function fetchAsana() {
     });
 
     res.on('end', function () {
-      process.stdout.write("ASANA TASKS\n");
-  
       var tasks = JSON.parse(taskData).data;
       tasks.forEach(function (task) {
-        var taskID = task.id;
-        var taskName = task.name;
-        process.stdout.write("  " + taskID + ": " + taskName + "\n");
+        asanaTasks.push({id: task.id, name: task.name});
       });
+
+      asanaWorkspaceCount += 1;
+      return cb();
     });
   });
   req.end();
 
   req.on('error', function (e) {
     console.error(e);
+  });
+}
+
+// Asana: http://developer.asana.com/documentation/
+function fetchAsana() {
+  var workspaces = conf.get('asana').workspaces.split(',');
+  workspaces.forEach(function (workspace) {
+    fetchAsanaWorkspace(workspace, function () {
+      if (workspaces.length != asanaWorkspaceCount) {
+        return;
+      }
+
+      process.stdout.write("ASANA TASKS\n");
+        asanaTasks.forEach(function (task) {
+        process.stdout.write("  " + task.id + ": " + task.name + "\n");
+      });
+    });
   });
 }
 
@@ -133,6 +148,6 @@ function fetchBugzilla() {
   });
 }
 
-//fetchAsana();
+fetchAsana();
 fetchGithub();
 fetchBugzilla();
