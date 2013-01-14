@@ -4,7 +4,9 @@
   "description": "Persona Hacker Dashboard: displays tasks and bugs assigned to a hacker",
   "main": "index.js",
   "dependencies": {
-    "convict": "~0.0.6"
+    "convict": "~0.0.6",
+    "handlebars": "1.0.7",
+    "hapi": "0.11.2"
   },
   "devDependencies": {},
   "scripts": {
