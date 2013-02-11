@@ -6,10 +6,122 @@
     <body>
         <div>
             <h1>Your Dashboard</h1>
-            <div>{{data.asana}}</div>
-            <div>{{data.bugzilla}}</div>
-            <div>{{data.github}}</div>
-            <div>{{data.teamstatus}}</div>
+            <h2>Timezones</h2>
+            <div>
+              <ul>
+                {{#if data.timezones}}
+                {{#each data.timezones}}
+                <li><img src="{{avatar}}"><br>
+                {{time}}</li>
+                {{/each}}
+                {{/if}}
+              </ul>
+            </div>
+
+            <h2>Asana</h2>
+            <h3>Inbox</h3>
+            {{#each data.asana.inbox}}
+            <div>{{id}}: {{title}}</div>
+            {{/each}}
+            <h3>Today</h3>
+            {{#each data.asana.today}}
+            <div>{{id}}: {{title}}</div>
+            {{/each}}
+            <h3>Upcoming</h3>
+            {{#each data.asana.upcoming}}
+            <div>{{id}}: {{title}}</div>
+            {{/each}}
+            <h3>Later</h3>
+            {{#each data.asana.later}}
+            <div>{{id}}: {{title}}</div>
+            {{/each}}
+
+            <h2>Bugzilla</h2>
+            {{#if data.bugzilla.blocker}}
+            <h3>Blocker</h3>
+            {{#each data.bugzilla.blocker}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}} [{{status}}]</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.bugzilla.critical}}
+            <h3>Critical</h3>
+            {{#each data.bugzilla.critical}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}} [{{status}}]</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.bugzilla.major}}
+            <h3>Major</h3>
+            {{#each data.bugzilla.major}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}} [{{status}}]</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.bugzilla.normal}}
+            <h3>Normal</h3>
+            {{#each data.bugzilla.normal}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}} [{{status}}]</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.bugzilla.minor}}
+            <h3>Minor</h3>
+            {{#each data.bugzilla.minor}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}} [{{status}}]</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.bugzilla.trivial}}
+            <h3>Trivial</h3>
+            {{#each data.bugzilla.trivial}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}} [{{status}}]</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.bugzilla.enhancement}}
+            <h3>Enhancement</h3>
+            {{#each data.bugzilla.enhancement}}
+
+            {{/each}}
+            {{/if}}
+
+            <h2>Github</h2>
+            {{#if data.github.sev5}}
+            <h3>★★★★★</h3>
+            {{#each data.github.sev5}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}}</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.github.sev4}}
+            <h3>★★★★</h3>
+            {{#each data.github.sev4}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}}</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.github.sev3}}
+            <h3>★★★</h3>
+            {{#each data.github.sev3}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}}</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.github.sev2}}
+            <h3>★★</h3>
+            {{#each data.github.sev2}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}}</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.github.sev1}}
+            <h3>★</h3>
+            {{#each data.github.sev1}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}}</div>
+            {{/each}}
+            {{/if}}
+            {{#if data.github.sev0}}
+            <h3>unknown</h3>
+            {{#each data.github.sev0}}
+            <div><a href="{{link}}">{{id}}</a>: {{title}}</div>
+            {{/each}}
+            {{/if}}
+
+            <h2>Team Status</h2>
+            {{#each data.teamstatus}}
+            <div>{{at}}: {{content}}</div>
+            {{/each}}
         </div>
     </body>
 </html>
